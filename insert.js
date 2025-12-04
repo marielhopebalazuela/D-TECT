@@ -2,8 +2,7 @@ const fs = require("fs");
 const csv = require("csv-parser");
 const { createClient } = require("@supabase/supabase-js");
 const supabaseClient = createClient(
-  "https://yxvgwmxlznpxqmmiofuy.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl4dmd3bXhsem5weHFtbWlvZnV5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MTY5NTk3NiwiZXhwIjoyMDY3MjcxOTc2fQ.nOfRegHNEriDk2Sioa5f3Aaa_CwPEhyCnPyB9aV6k8Y"
+  "https://yxvgwmxlznpxqmmiofuy.supabase.co"
 );
 
 // 2️⃣ Configuration
