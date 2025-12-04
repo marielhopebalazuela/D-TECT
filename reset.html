@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D-TECT</title>
+    <link rel="stylesheet" href="css/account.css">
+    <link rel="icon" href="assets/D-TECT.png" type="image/png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>D-TECT</h1>
+        </div>
+    </header>
+    <div id="reset-password-container" class="modal-content">
+        <h2>Set Your Password</h2>
+        <form id="reset-password-form">
+            <input type="password" id="new-password" placeholder="Enter new password" required>
+            <input type="password" id="confirm-password" placeholder="Confirm new password" required>
+            <button class="reset-btn" type="submit">Set Password</button>
+        </form>
+    </div>
+
+    <div id="status-modal" class="modal">
+        <div class="modal-content">
+            <h2 id="status-title"></h2>
+            <p id="status-content"></p>
+            <div class="status-buttons">
+                <button class="status-ok-btn" id="status-ok-btn">Confirm</button>
+                <button class="status-cancel-btn" id="status-cancel-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+<script src="js/reset.js"></script>
+</body>
+</html>

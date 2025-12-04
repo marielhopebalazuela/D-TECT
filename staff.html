@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Dengue Monitoring</title>
+    <link rel="stylesheet" href="css/staff.css">
+    <link rel="icon" href="assets/D-TECT.png" type="image/png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
+</head>
+<body>
+    <div id="loading">
+        <div class="loading-content">
+            <h2>D-TECT</h2>
+            <div id="spinner" class="spinner"></div>
+            <p id="spinner-text"></p>
+        </div>
+    </div>
+    <header>
+        <div class="header-left">
+            <div class="header-title"><h1>D-TECT</h1></div>
+        </div>
+        <div class="header-btn">
+            <div class="dropdown">
+                <button class="dropdown-btn"><i class="fas fa-ellipsis-v"></i></button>
+                <div class="dropdown-content">
+                    <button class="info-btn" id="info-btn"><i class="fas fa-info"></i>About</button>
+                    <button id="reset-btn"><i class="fas fa-key"></i>Reset Password</button>
+                    <button class="logout-btn" id="logout"><i class="fas fa-sign-out-alt"></i>Log Out</button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="main-page">
+        <main class="main-content">
+            <div id="upload" class="content-section">
+                <h2>Manage Barangay Health Records</h2>
+                <button id="upload-btn">Upload New Records</button>
+                <button id="showData-btn">Show Data</button>
+                <button id="open-download-modal">Download Forecast Report</button>
+            </div>
+        </main>
+
+    <!-- Information Modal -->
+    <div id="info-modal" class="modal">
+        <div class="modal-content">
+            <h2>About the System</h2>
+            <p>This Dengue Monitoring System is a comprehensive tool designed to track, analyze, and predict dengue cases in <b>San Pablo City, Laguna</b>. It provides real-time data, historical analysis, and predictive insights to help the local health unit manage and prevent outbreaks.</p>
+            <p><strong>Features:</strong></p>
+            <ul>
+                <li><strong>Dashboard:</strong> An at-a-glance overview of current cases, high-risk zones, and trends in San Pablo City.</li>
+                <li><strong>Predictions:</strong> Forecasts future dengue cases for San Pablo based on historical data.</li>
+                <li><strong>Barangays:</strong> Detailed statistics for each barangay in San Pablo City.</li>
+                <li><strong>Yearly Analysis:</strong> In-depth charts showing trends over the years for San Pablo City.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="forgot-password" class="modal">
+        <form id="forgot-form" class="modal-content">
+            <h2>Reset Your Password</h2>
+            <input type="email" id="reset-email" placeholder="Enter your email" required>
+            <button  type="submit" class="reset-btn">Send Reset Link</button>
+        </form>
+    </div>
+
+    <div id="upload-modal" class="modal">
+        <div class="modal-content">
+            <h2>Upload CSV Records</h2>
+            <label for="barangay">Barangay:</label>
+            <select id="barangay"></select>
+
+            <label for="year">Year:</label>
+            <input type="number" id="year" min="2000" max="2100" placeholder="e.g., 2025">
+
+            <label for="week">Week:</label>
+            <input type="number" id="week" min="1" max="52" placeholder="e.g., 12">
+
+            <label for="population">Population:</label>
+            <input type="number" id="population" name="population" min="1" required>
+
+            <label for="csvFile">Upload CSV:</label>
+            <input type="file" id="csvFile" accept=".csv">
+
+            <div class="modal-actions">
+                <button id="save-btn">Upload</button>
+            </div>
+        </div>
+    </div>
+        
+    <div id="showData-Modal" class="modal">
+        <div class="modal-content" id="showData-Modal-content">
+            <h2>View and Manage Records</h2>
+
+            <div class="showData-filters">
+                <div class="filters-section">
+                    <label>Barangay: </label>
+                    <div class="filters" id="filterBarangay"></div>
+                </div>
+                <div class="filters-section">
+                    <label>Year: </label>
+                    <div class="filters" id="filterYear"></div>
+                </div>
+                <div class="filters-section">
+                    <label>Week: </label>
+                    <div class="filters" id="filterWeek"></div>
+                </div>
+            </div>
+
+            <div class="showData-buttons">
+                <button id="searchDataBtn">Search</button>
+                <button id="downloadCsvBtn" disabled>Download</button>
+                <button id="deleteDataBtn" disabled>Delete Shown Data</button>
+            </div>
+            
+            <div id="dataTable-container" class="dataTable-container">
+                <table id="dataTable">
+                <thead>
+                    <tr>
+                    <th>Barangay</th>
+                    <th>Year</th>
+                    <th>Month</th>
+                    <th>Week</th>
+                    <th>Gender</th>
+                    <th>Age Group</th>
+                    <th>Cases</th>
+                    </tr>
+                </thead>
+                <tbody id="dataTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="downloadModal" class="modal">
+        <div class="modal-content" id="download-modal-content">
+            <h2>Download Forecast Options</h2>
+            <div class="mode-select">
+                <select id="forecast-mode-select">
+                    <option value="barangay">Barangay Forecast</option>
+                    <option value="citywide">Citywide Forecast</option>
+                </select>
+            </div>
+            <div class="weeks-input">
+                <h4>Week/s:</h4>
+                <input type="number" id="forecast-weeks-input" min="1" placeholder="Enter week/s to forecast" />
+            </div>
+            <div id="barangay-select-section">
+                <h4 id="barangay-wide-list-title">Barangays:</h4>
+                <div class="filters" id="barangay-wide-list"></div>
+            </div>
+
+            <div class="button-group">
+                <button id="download-table">Download Table</button>
+                <button id="download-chart">Download Chart</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="status-modal" class="modal">
+        <div class="modal-content" id="status-modal-content">
+            <h2 id="status-title"></h2>
+            <p id="status-content"></p>
+            <div class="status-buttons">
+                <button class="status-ok-btn" id="status-ok-btn">Confirm</button>
+                <button class="status-cancel-btn" id="status-cancel-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <script src="js/staff.js"></script>
+</body>
+</html> 

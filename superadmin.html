@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management</title>
+  <link rel="stylesheet" href="css/superadmin.css">
+    <link rel="icon" href="assets/D-TECT.png" type="image/png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+  <header>
+      <div class="header-left">
+          <div class="header-title"><h1>D-TECT</h1></div>
+      </div>
+      <div class="header-btn">
+            <div class="dropdown">
+                <button class="dropdown-btn"><i class="fas fa-ellipsis-v"></i></button>
+                <div class="dropdown-content">
+                    <button id="reset-btn"><i class="fas fa-key"></i>Reset Password</button>
+                    <button class="logout-btn" id="logout"><i class="fas fa-sign-out-alt"></i>Log Out</button>
+                </div>
+            </div>
+      </div>
+  </header>
+
+  <div class="main-page">
+    <main class="main-content">
+      <div id="log-record" class="content-section">
+        <h2>Log Record</h2>
+        <div class="table-container">
+          <table class= "table" id="logTable">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Full Name</th>
+                <th>Role</th>
+                <th>Time Logged</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="user-management" class="content-section">
+        <h2>User Management</h2>
+        <button id="signup-btn" class="add-btn">Create New Account</button>
+        <div class="table-container">
+          <table class= "table" id="usersTable">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Full Name</th>
+                <th>Role</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <div id="forgot-password" class="modal">
+      <form id="forgot-form" class="modal-content">
+          <h2>Reset Your Password</h2>
+          <input type="email" id="reset-email" placeholder="Enter your email" required>
+          <button  type="submit" class="reset-btn">Send Reset Link</button>
+      </form>
+  </div>
+
+  <div id="deleteModal" class="modal">
+    <div class="modal-content">
+      <p>Are you sure you want to delete this user?</p>
+      <div class="modal-buttons">
+        <button id="confirmDeleteBtn">Delete</button>
+        <button id="cancelDeleteBtn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="signup" class="modal">
+      <div class="modal-content">
+          <h2>Create a New Account</h2>
+          <form id="signup-form">
+              <div class="form-group">
+                  <div class="name">
+                      <input type="text" id="firstname" placeholder="First Name" required>
+                      <input type="text" id="lastname" placeholder="Last Name" required>
+                  </div>
+                  <input type="email" id="signup-email" placeholder="Email" required>
+              </div>
+              <div class="form-group">
+                  <select id="user-role" required>
+                      <option value="" disabled selected>Role</option>
+                      <option value="Healthcare Staff">Healthcare Staff</option>
+                      <option value="System Administrator">System Administrator</option>
+                      <option value="Account Administrator">Account Administrator</option>
+                  </select>
+              </div>
+              <button type="submit" class="signup-submit-btn">Create Account</button>
+          </form>
+      </div>
+  </div>
+
+  <div id="status-modal" class="modal">
+      <div class="modal-content">
+          <h2 id="status-title"></h2>
+          <p id="status-content"></p>
+          <div class="status-buttons">
+            <button class="status-ok-btn" id="status-ok-btn">Confirm</button>
+            <button class="status-cancel-btn" id="status-cancel-btn">Cancel</button>
+          </div>
+      </div>
+  </div>
+  <script src="js/superadmin.js"></script>
+
+</body>
+</html>
